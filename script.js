@@ -1,3 +1,15 @@
+var highscoreArea = document.querySelector("#highscore-area");
+
+var quizArea = document.querySelector("#quiz-area");
+var header = document.querySelector("#header");
+var buttonOption1 = document.querySelector("#option1");
+var buttonOption2 = document.querySelector("#option2");
+var buttonOption3 = document.querySelector("#option3");
+var buttonOption4 = document.querySelector("#option4");
+var questionResultArea = document.querySelector("#questions-result-area");
+
+var scoreArea = document.querySelector("#score-area");
+
 // quizBot oraganizes the questions, options for each question, and associated
 // truth value. It also contains all the functions needed to navigate the data
 // structure. 
@@ -7,7 +19,7 @@ var quizBot = {
     questionsArray: [         
         question1 = {
                 question: "why are gators so cool?",
-                option1: {text: "this is option 1", truthValue: true},
+                option1: {text: "quizBot is option 1", truthValue: true},
                 option2: {text: "you got option 2 here", truthValue: false},
                 option3: {text: "option 3 reporting in", truthValue: false},
                 option4: {text: "4 on standby", truthValue: false},
@@ -47,20 +59,41 @@ var quizBot = {
                 option3: {text: "some text", truthValue: false},
                 option4: {text: "some text", truthValue: false},
             }        
-    ],
-    // Utility function to help in development that console logs an option 
-    // set given a value targeting a desired index in questionsArray
-    consoleOptions: function (index) {
-        console.log(this.questionsArray[index].option1.text);
-        console.log(this.questionsArray[index].option2.text);
-        console.log(this.questionsArray[index].option3.text);
-        console.log(this.questionsArray[index].option4.text);
-    }
+    ]   
 }   
-console.log(quizBot);
 
-quizBot.consoleOptions(0);
-quizBot.consoleOptions(1);
+// Utility function to help in development that console logs an option 
+// set given a value targeting a desired index in questionsArray
+function consoleOptions () {
+    console.log(buttonOption1.textContent);
+    console.log(buttonOption2.textContent);
+    console.log(buttonOption3.textContent);
+    console.log(buttonOption4.textContent);
+}
+
+// Sets next round of question up by replacing question and response options text
+// in quiz area
+function setupQuestionRound (index) {
+    var h2 = document.createElement("h2");
+    h2.textContent = quizBot.questionsArray[index].question;
+    header.appendChild(h2);
+    buttonOption1.textContent = quizBot.questionsArray[index].option1.text;
+    buttonOption2.textContent = quizBot.questionsArray[index].option2.text;
+    buttonOption3.textContent = quizBot.questionsArray[index].option3.text;
+    buttonOption4.textContent = quizBot.questionsArray[index].option4.text;
+}
+
+function inputAnswer (index) {
+//check answer
+//update score, display correct or wrong, setup next question
+}
+
+var answerBtn = document.querySelector("button");
+answerBtn.addEventListener("click", inputAnswer(quizBot.questionIndex));
+
+console.log(quizBot);
+setupQuestionRound(0);
+consoleOptions();
 
 // Unit 4 Activity 15 has good reference material
 // HTML - Pull from bootstrap, use grid system

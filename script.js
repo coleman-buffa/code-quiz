@@ -88,16 +88,18 @@ function setupQuestionRound () {
 function compareAnswer (event) {    
     event.preventDefault();
     if (event.target.textContent === quizBot.questionsArray[qIndex].correct) {
-        console.log("got the correct answer");
+        console.log("click correct answer");
         resultP.textContent = "Correct"
         questionResultArea.classList.remove("hide");
     } else {
-        console.log("got the wrong answer");
+        console.log("click wrong answer");
         resultP.textContent = "Incorrect"
         questionResultArea.classList.remove("hide");
-    //Timer function adding hide back to answers
-
     }
+   setTimeout(function() {
+       questionResultArea.classList.add("hide");
+   }, 1000);
+    
     qIndex++
     if (qIndex === quizBot.questionsArray.length) {
         endGame();
@@ -105,7 +107,9 @@ function compareAnswer (event) {
     setupQuestionRound();
 }
 
-function 
+
+function endGame() {
+}
 
 function startGame () {
     //start timer

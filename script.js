@@ -17,83 +17,86 @@ var quizBot = {
     scoreTimer: 0,
     questionIndex: 0,
     questionsArray: [         
-        question1 = {
-                question: "why are gators so cool?",
-                option1: {text: "quizBot is option 1", truthValue: true},
-                option2: {text: "you got option 2 here", truthValue: false},
-                option3: {text: "option 3 reporting in", truthValue: false},
-                option4: {text: "4 on standby", truthValue: false},
-            },
-            question2 = {
-                question: "when did dinosaurs go extinct?",
-                option1: {text: "some text1", truthValue: true},
-                option2: {text: "some text2", truthValue: false},
-                option3: {text: "some text3", truthValue: false},
-                option4: {text: "some text4", truthValue: false},
-            },
-            question3 = {
-                question: "why are stratovolcano erruptions so explosive?",
-                option1: {text: "some text", truthValue: true},
-                option2: {text: "some text", truthValue: false},
-                option3: {text: "some text", truthValue: false},
-                option4: {text: "some text", truthValue: false},
-            },
-            question4 = {
-                question: "what makes a good pizza?",
-                option1: {text: "some text", truthValue: true},
-                option2: {text: "some text", truthValue: false},
-                option3: {text: "some text", truthValue: false},
-                option4: {text: "some text", truthValue: false},
-            },
-            question5 = {
-                question: "one of the following doesn't fit!",
-                option1: {text: "some text", truthValue: true},
-                option2: {text: "some text", truthValue: false},
-                option3: {text: "some text", truthValue: false},
-                option4: {text: "some text", truthValue: false},
-            },
-            question6 = {
-                question: "what is plot armor?",
-                option1: {text: "some text", truthValue: true},
-                option2: {text: "some text", truthValue: false},
-                option3: {text: "some text", truthValue: false},
-                option4: {text: "some text", truthValue: false},
-            }        
+        {
+        question: "why are gators so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 1"
+        },
+        {
+        question: "why are sharks so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 4"
+        },
+        {
+        question: "why are volcanoes so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 3"
+        },
+        {
+        question: "why are dinosaurs so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 2"
+        },
+        {
+        question: "why are gators so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 4"
+        },
+        {
+        question: "why are sharks so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 4"
+        },
+        {
+        question: "why are volcanoes so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 2"
+        },
+        {
+        question: "why are dinosaurs so cool?",
+        choices: ["option 1", "option 2", "option 3", "option 4"],
+        correct: "option 3"
+        }               
     ]   
 }   
 
 // Utility function to help in development that console logs an option 
 // set given a value targeting a desired index in questionsArray
-function consoleOptions () {
-    console.log(buttonOption1.textContent);
-    console.log(buttonOption2.textContent);
-    console.log(buttonOption3.textContent);
-    console.log(buttonOption4.textContent);
+function consoleOptions (index) {
+    console.log(quizBot.questionsArray[index].question);
+    console.log(quizBot.questionsArray[index].choices);
+    console.log(quizBot.questionsArray[index].correct)
 }
 
 // Sets next round of question up by replacing question and response options text
 // in quiz area
-function setupQuestionRound (index) {
+function setupQuestionRound () {
     var h2 = document.createElement("h2");
-    h2.textContent = quizBot.questionsArray[index].question;
+    h2.textContent = quizBot.questionsArray[quizBot.questionIndex].question;
     header.appendChild(h2);
-    buttonOption1.textContent = quizBot.questionsArray[index].option1.text;
-    buttonOption2.textContent = quizBot.questionsArray[index].option2.text;
-    buttonOption3.textContent = quizBot.questionsArray[index].option3.text;
-    buttonOption4.textContent = quizBot.questionsArray[index].option4.text;
+    buttonOption1.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[0];
+    buttonOption2.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[1];
+    buttonOption3.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[2];
+    buttonOption4.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[3];
 }
 
-function inputAnswer (index) {
-//check answer
-//update score, display correct or wrong, setup next question
+function compareAnswer (event) {
+
+    //update score, display correct or wrong, setup next question
 }
 
-var answerBtn = document.querySelector("button");
-answerBtn.addEventListener("click", inputAnswer(quizBot.questionIndex));
+function startGame () {
+    //start timer
+    //reset all object parameters to their initial values
+    //setupQuestionRound[0]
+}
 
-console.log(quizBot);
-setupQuestionRound(0);
-consoleOptions();
+var answerBtn = document.querySelector(".btn");
+document.querySelector(".btn").on("click", compareAnswer());
+
+
+consoleOptions(0);
+setupQuestionRound();
 
 // Unit 4 Activity 15 has good reference material
 // HTML - Pull from bootstrap, use grid system

@@ -82,7 +82,9 @@ function setupQuestionRound () {
 }
 
 function compareAnswer (event) {
-    //update score, display correct or wrong, setup next question
+    event.preventDefault();
+    var userSelection = event.target.textContent;
+    console.log(userSelection);
 }
 
 function startGame () {
@@ -91,13 +93,14 @@ function startGame () {
     //setupQuestionRound[0]
 }
 
-// var answerBtn = document.querySelector(".btn");
-// var userAnswer = 
-// answerBtn.addEventListener("click", compareAnswer());
+var answerBtn = document.querySelectorAll(".btn");
+answerBtn.forEach(answerBtn => {
+    answerBtn.addEventListener("click", compareAnswer);
+});
+
 
 consoleOptions(0);
 setupQuestionRound();
-
 
 
 

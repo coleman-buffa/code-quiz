@@ -6,6 +6,7 @@ var buttonOption1 = document.querySelector("#option1");
 var buttonOption2 = document.querySelector("#option2");
 var buttonOption3 = document.querySelector("#option3");
 var buttonOption4 = document.querySelector("#option4");
+var buttonArray = [buttonOption1, buttonOption2, buttonOption3, buttonOption4];
 var questionResultArea = document.querySelector("#questions-result-area");
 
 var scoreArea = document.querySelector("#score-area");
@@ -13,9 +14,10 @@ var scoreArea = document.querySelector("#score-area");
 // quizBot oraganizes the questions, options for each question, and associated
 // truth value. It also contains all the functions needed to navigate the data
 // structure. 
+var questionIndex = 0;
+
 var quizBot = {
     scoreTimer: 0,
-    questionIndex: 0,
     questionsArray: [         
         {
         question: "why are gators so cool?",
@@ -72,16 +74,14 @@ function consoleOptions (index) {
 // in quiz area
 function setupQuestionRound () {
     var h2 = document.createElement("h2");
-    h2.textContent = quizBot.questionsArray[quizBot.questionIndex].question;
+    h2.textContent = quizBot.questionsArray[questionIndex].question;
     header.appendChild(h2);
-    buttonOption1.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[0];
-    buttonOption2.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[1];
-    buttonOption3.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[2];
-    buttonOption4.textContent = quizBot.questionsArray[quizBot.questionIndex].choices[3];
+    for (var i = 0; i < buttonArray.length; i++) {
+        buttonArray[i].textContent = quizBot.questionsArray[questionIndex].choices[i];
+    }
 }
 
 function compareAnswer (event) {
-
     //update score, display correct or wrong, setup next question
 }
 
@@ -91,12 +91,16 @@ function startGame () {
     //setupQuestionRound[0]
 }
 
-var answerBtn = document.querySelector(".btn");
-document.querySelector(".btn").on("click", compareAnswer());
-
+// var answerBtn = document.querySelector(".btn");
+// var userAnswer = 
+// answerBtn.addEventListener("click", compareAnswer());
 
 consoleOptions(0);
 setupQuestionRound();
+
+
+
+
 
 // Unit 4 Activity 15 has good reference material
 // HTML - Pull from bootstrap, use grid system

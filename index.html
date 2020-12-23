@@ -19,19 +19,30 @@
             <main class="col-md-6" id="quiz-area">
                 <header id="header">
                     <h2 id="h2"></h2>
+                    <p id="welcome-instructions" class="hide"></p>
+                    <form id="score-entry">
+                        <div class="mb-3">
+                          <label for="exampleInputEmail1" class="form-label">Email address</label>
+                          <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                        </div>                       
+                        <button type="submit" class="btn btn-primary btn-lg my-1">Submit</button>
+                      </form>
+                    <button type="button" class="btn btn-primary btn-lg my-1" id="start-game"></button>
                 </header>
-                <div>
-                    <button type="button" class="btn btn-primary btn-lg my-1" id="option1"></button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-lg my-1" id="option2"></button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-lg my-1" id="option3"></button>
-                </div>
-                <div>
-                    <button type="button" class="btn btn-primary btn-lg my-1" id="option4"></button>
-                </div>
+                <section class="hide" id="answer-button-area">
+                    <div>
+                        <button type="button" class="btn btn-primary btn-lg my-1" id="option1"></button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-lg my-1" id="option2"></button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-lg my-1" id="option3"></button>
+                    </div>
+                    <div>
+                        <button type="button" class="btn btn-primary btn-lg my-1" id="option4"></button>
+                    </div>
+                </section>
                 <div id="questions-result-area" class="hide">
                     <hr/>
                     <p></p>

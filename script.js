@@ -21,16 +21,16 @@ var resultP = questionResultArea.lastChild;
 var scoreArea = document.querySelector("#score-area");
 
 var qIndex = 0;
+var scoreTimer;
+var interval;
 
-// quizBot oraganizes the questions, options for each question, and associated
-// truth value. It also contains all the functions needed to navigate the data
-// structure. 
+// questionArray oraganizes the questions, options for each question, and 
+// associated truth value. It also contains all the functions needed to 
+// navigate the data structure. 
 
-var quizBot = {
-    scoreTimer: 0,
-    questionsArray: [         
+var questionsArray = [         
         {
-        question: "why are gators so cool?",
+        question: "why are aligators so cool?",
         choices: ["option 1", "option 2", "option 3", "option 4"],
         correct: "option 1"
         },
@@ -50,7 +50,7 @@ var quizBot = {
         correct: "option 2"
         },
         {
-        question: "why are gators so cool?",
+        question: "why are aligators so cool?",
         choices: ["option 1", "option 2", "option 3", "option 4"],
         correct: "option 4"
         },
@@ -69,15 +69,14 @@ var quizBot = {
         choices: ["option 13", "option 14", "option 15", "option 16"],
         correct: "option 3"
         }               
-    ]   
-}   
+] 
 
 // Utility function to help in development that console logs an option 
 // set given a value targeting a desired index in questionsArray
 function consoleOptions (index) {
-    console.log(quizBot.questionsArray[index].question);
-    console.log(quizBot.questionsArray[index].choices);
-    console.log(quizBot.questionsArray[index].correct);
+    console.log(questionsArray[index].question);
+    console.log(questionsArray[index].choices);
+    console.log(questionsArray[index].correct);
 }
 
 // Sets next round of question up by replacing question and response options text
@@ -85,63 +84,102 @@ function consoleOptions (index) {
 // needed to play the game.
 function setupQuestionRound () {
     buttonArea.classList.remove("hide");
-    h2.textContent = quizBot.questionsArray[qIndex].question;
+    h2.textContent = questionsArray[qIndex].question;
     for (var i = 0; i < buttonArray.length; i++) {
-        buttonArray[i].textContent = quizBot.questionsArray[qIndex].choices[i];
+        buttonArray[i].textContent = questionsArray[qIndex].choices[i];
     }
-
 }
 
 function compareAnswer (event) {    
     event.preventDefault();
-    if (event.target.textContent === quizBot.questionsArray[qIndex].correct) {
+    if (event.target.textContent === questionsArray[qIndex].correct) {
         resultP.textContent = "Correct"
         questionResultArea.classList.remove("hide");
+        //can add points here
     } else {
         resultP.textContent = "Incorrect"
         questionResultArea.classList.remove("hide");
+        scoreTimer = scoreTimer -10;
     }
    setTimeout(function() {
        questionResultArea.classList.add("hide");
    }, 1000);    
     
-    if (qIndex === quizBot.questionsArray.length - 1) {
+    if (qIndex === questionsArray.length - 1 || scoreTimer === 0 || scoreTimer < 0) {
         endGame();
+        scoreArea.classList.add("hide");
+        stopTimer();
         return;
     }
     qIndex++;
     setupQuestionRound();
 }
 
-
 function endGame() {
-    h2.textContent = "Thank you for playing!";
-    welcomeP.textContent = "Your final score is " + scoreTimer;
+    setupScore();
+    //Other game closing stuff like setting highscore
 }
 
 function setupGame() {
+    strikeAll();
     quizArea.classList.remove("hide");
     header.classList.remove("hide");
     h2.classList.remove("hide");
-    welcomeP.classList.remove("hide");
     buttonArea.classList.remove("hide");
+    buttonOption1.classList.remove("hide");
+    buttonOption2.classList.remove("hide");
+    buttonOption3.classList.remove("hide");
+    buttonOption4.classList.remove("hide");
+    scoreArea.classList.remove("hide");
     setupQuestionRound();
+    scoreTimer = 75;
+    startTimer();
+    
+    //call function that starts setInterval attached to a global variable
+}
+
+function startTimer() {
+     interval = setInterval(function() {
+        
+        scoreArea.innerHTML = `<p>Time left : ${scoreTimer}</p>`;
+                //update text first
+        scoreTimer--;
+        if (scoreTimer === 0 || scoreTimer < 0) {
+            scoreArea.classList.add("hide");
+            endGame();
+            stopTimer();
+            return;
+        }
+
+    }, 1000);
+}
+
+function stopTimer(){
+    clearInterval(interval);
 }
 
 function setupWelcome() {
+    strikeAll();
     quizArea.classList.remove("hide");
     header.classList.remove("hide");
     h2.classList.remove("hide");
     welcomeP.classList.remove("hide");
     startButton.classList.remove("hide");
+    h2.textContent = "Test your might";
+    welcomeP.textContent = "Test your knowledge by answering the following questions!";
+    startButton.textContent = "Begin your Trial";
 }
 
 function setupScore() {
+    strikeAll();
     quizArea.classList.remove("hide");    
     header.classList.remove("hide");
     h2.classList.remove("hide");
     welcomeP.classList.remove("hide");
     scoreEntry.classList.remove("hide");
+    h2.textContent = "Thank you for playing!";
+    welcomeP.textContent = "Your final score is: " + scoreTimer;
+
 }
 
 function strikeAll() {
@@ -160,22 +198,14 @@ function strikeAll() {
     scoreArea.classList.add("hide");
 }
 
-
-function startGame () {
-    // Show all elements associated with the start of the game
-        // h2 with welcome text, p tag with some instructions, and a button that starts the game when clicked
-    //start timer
-    //reset all object parameters to their initial values
-    //setupQuestionRound[0]
-}
-
 strikeAll();
 setupWelcome();
 startButton.addEventListener("click", setupGame);
 
-//problem spotted - this implementation will apply to all buttons that have btn class
-var answerBtn = document.querySelectorAll(".btn");
+var answerBtn = document.querySelectorAll(".answer-button");
 answerBtn.forEach(answerBtn => {
     answerBtn.addEventListener("click", compareAnswer);
 });
 
+//during endgame set local storage
+//scoreboard = {name: "blah", score: 44}

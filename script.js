@@ -1,3 +1,4 @@
+//List of DOM pointers useful for making page manupulations.
 var highscoreArea = document.querySelector("#highscore-area");
 
 var quizArea = document.querySelector("#quiz-area");
@@ -8,7 +9,7 @@ var scoreEntry = document.querySelector("#score-entry");
 var startButton = document.querySelector("#start-game");
 var scoreEntry = document.querySelector("#submitScore");
 var scoreInputField = document.querySelector("#score-input")
-var playAgainBtn = document.querySelector("#play-again");
+var playAgainBtn = document.querySelector("#play-again")
 var scoreResetBtn = document.querySelector("#reset-scoreboard");
 var scoreboardNameField = document.querySelector("#scoreboard-entry");
 
@@ -31,49 +32,33 @@ var interval;
 var scoreBoard = [];
 
 // questionArray oraganizes the questions, options for each question, and 
-// associated truth value. It also contains all the functions needed to 
-// navigate the data structure. 
+// associated truth value.
 
 var questionsArray = [
     {
-        question: "why are aligators so cool?",
-        choices: ["option 1", "option 2", "option 3", "option 4"],
-        correct: "option 1"
+        question: "When did the dinosaurs go extinct?",
+        choices: ["65 million years ago", "225 million years ago", "2 million years ago", "6000 years ago"],
+        correct: "65 million years ago"
     },
     {
-        question: "why are sharks so cool?",
-        choices: ["option 5", "option 6", "option 7", "option 8"],
-        correct: "option 4"
+        question: "What kind of volcanoes are the Hawaiian islands?",
+        choices: ["Stratovolcano", "Mid-Ocean ridges", "Caldera-complex volcano", "Shield volcano"],
+        correct: "Shield volcano"
     },
     {
-        question: "why are volcanoes so cool?",
-        choices: ["option 9", "option 10", "option 11", "option 12"],
-        correct: "option 3"
+        question: "What is the rock name of metamorphosed granite?",
+        choices: ["Conglomerate", "Slate", "Gneiss", "Schist"],
+        correct: "Gneiss"
     },
     {
-        question: "why are dinosaurs so cool?",
-        choices: ["option 13", "option 14", "option 15", "option 16"],
-        correct: "option 2"
+        question: "What is most common mineral in the crust of the earth?",
+        choices: ["Quartz", "Feldspars", "Micas", "Olivine"],
+        correct: "Feldspars"
     },
     {
-        question: "why are aligators so cool?",
-        choices: ["option 1", "option 2", "option 3", "option 4"],
-        correct: "option 4"
-    },
-    {
-        question: "why are sharks so cool?",
-        choices: ["option 5", "option 6", "option 7", "option 8"],
-        correct: "option 4"
-    },
-    {
-        question: "why are volcanoes so cool?",
-        choices: ["option 9", "option 10", "option 11", "option 12"],
-        correct: "option 2"
-    },
-    {
-        question: "why are dinosaurs so cool?",
-        choices: ["option 13", "option 14", "option 15", "option 16"],
-        correct: "option 3"
+        question: "Which fault arrangement produces the biggest earthquakes?",
+        choices: ["Strike-slip", "Rift zones", "Normal fault", "Thrust fault"],
+        correct: "Thrust fault"
     }
 ]
 
@@ -96,6 +81,10 @@ function setupQuestionRound() {
     }
 }
 
+//Compares the answer the user just selected to the correct value in the question
+//array. Regardless of how they answer they will be greeted with an appropriate response
+//that stays on the screen for 1 second. If any of the game over conditions are met the 
+//score timer clock is stopped and the user is moved to the game over screen.
 function compareAnswer(event) {
     event.preventDefault();
     event.stopPropagation();
@@ -112,7 +101,7 @@ function compareAnswer(event) {
     }, 1000);
 
     if (qIndex === questionsArray.length - 1 || scoreTimer === 0 || scoreTimer < 0) {
-        setupScore();
+        setupGameOver();
         scoreArea.classList.add("hide");
         stopTimer();
         return;
@@ -121,26 +110,38 @@ function compareAnswer(event) {
     setupQuestionRound();
 }
 
-function gotoScorePage() {
+//Empties the scoreboard in local storage
+function resetScoreboard(event) {
+    event.preventDefault();
+    scoreBoard = [];
+    localStorage.setItem("scoreboard", JSON.stringify(scoreBoard));    
+}
+// I can't figure out why elements in this function will not display. This function
+// was intended to create the scoreboard viewing area with the option to reset it
+// or play the quiz game again.
+function gotoScoreBoard() {
     strikeAll();
-    // need h2, custom made score list from local storage, play again button, clear high score button
+    h2.textContent = "Scoreboard";
     h2.classList.remove("hide");
-    scoreEntry.textContent = "Play again";
-    startButton.textContent = "Clear high scores";
-    scoreEntry.classList.remove("hide");
-    startButton.classList.remove("hide");
-
+    //scoreboard built from storage goes here
+    playAgainBtn.textContent = "Play again";
+    scoreResetBtn.textContent = "Reset scoreboard";  
+    playAgainBtn.classList.remove("hide");
+    scoreResetBtn.classList.remove("hide");
 }
 
+// Inputs the user's score and name to local storage.
 function submitScore(event) {
     event.preventDefault();
-    event.stopPropagation();
     var userName = scoreInputField.value.trim();
     scoreBoard.push({ name: userName, score: scoreTimer });
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
-    gotoScorePage();
+    gotoScoreBoard();
 }
 
+//Setup elements needed to play the game and initializes the score timer
+//to 75. Once the startTimer function has been called the scoreTimer
+//variable will start decrementing every second.
 function setupGame() {
     strikeAll();
     quizArea.classList.remove("hide");
@@ -155,27 +156,30 @@ function setupGame() {
     setupQuestionRound();
     scoreTimer = 75;
     startTimer();
-
-    //call function that starts setInterval attached to a global variable
 }
 
+//Starts a timer that decrements the value of scoreTimer every second. The
+//setInterval timer is set to a global variable so it can be called from several
+//different places.
 function startTimer() {
     interval = setInterval(function () {
         scoreArea.innerHTML = `<p>Time left : ${scoreTimer}</p>`;
         scoreTimer--;
         if (scoreTimer === 0 || scoreTimer < 0) {
             scoreArea.classList.add("hide");
-            setupScore();
+            setupGameOver();
             stopTimer();
             return;
         }
     }, 1000);
 }
 
+//Stops the setInverval timer.
 function stopTimer() {
     clearInterval(interval);
 }
 
+//Setup welcome screen.
 function setupWelcome() {
     strikeAll();
     quizArea.classList.remove("hide");
@@ -184,11 +188,13 @@ function setupWelcome() {
     welcomeP.classList.remove("hide");
     startButton.classList.remove("hide");
     h2.textContent = "Test your might";
-    welcomeP.textContent = "Test your knowledge by answering the following questions!";
+    welcomeP.textContent = "Test your knowledge by answering the following questions! Answer incorrectly and lose 10 seconds off the clock. The game ends when you run out of questions or time.";
     startButton.textContent = "Begin your Trial";
 }
 
-function setupScore() {
+//Setup game over screen. Importantly the user's score cannot be less than 0. That would be
+//bad for morale.
+function setupGameOver() {
     strikeAll();
     quizArea.classList.remove("hide");
     header.classList.remove("hide");
@@ -205,6 +211,7 @@ function setupScore() {
     }
 }
 
+//Hide all HTML elements in prepration for setting up another stage. 
 function strikeAll() {
     quizArea.classList.add("hide");
     header.classList.add("hide");
@@ -225,18 +232,22 @@ function strikeAll() {
     scoreboardNameField.classList.add("hide");
 }
 
+//Clear all elements from screen
 strikeAll();
+//Setup the welcome screen 
 setupWelcome();
+//Starts game
 startButton.addEventListener("click", setupGame);
 
+//Allows user input
 var answerBtn = document.querySelectorAll(".answer-button");
 answerBtn.forEach(answerBtn => {
     answerBtn.addEventListener("click", compareAnswer);
 });
 
+//Submit score to scoreboard
 scoreEntry.addEventListener("click", submitScore);
+//Play the game again
 playAgainBtn.addEventListener("click", setupWelcome);
+//Reset the scoreboard
 scoreResetBtn.addEventListener("click", resetScoreboard);
-
-//during endgame set local storage
-//scoreboard = {name: "blah", score: 44}

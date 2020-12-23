@@ -13,22 +13,26 @@
 <body>
     <div class="container"> 
         <div class="row">
+            <!-- highscore viewing in top left corner -->
             <aside class="col-md-3" id="highscore-area">
-                <!-- highscore viewing in top left corner -->
             </aside>
+            <!-- main area that will display introduction, quiz, and scoreboard elements -->
             <main class="col-md-6" id="quiz-area">
                 <header id="header">
                     <h2 id="h2"></h2>
                     <p id="welcome-instructions" class="hide"></p>
                     <form id="score-entry">
-                        <div class="mb-3">
+                        <div class="mb-3" id="scoreboard-entry">
                           <label for="score-input-label" class="form-label">Enter your initials</label>
                           <input type="score" class="form-control" id="score-input" aria-describedby="scoreHelp">
                         </div>                       
-                        <button type="submit" class="btn btn-primary btn-lg my-1 score-button">Valhalla Awaits</button>
-                      </form>
+                        <button type="submit" class="btn btn-primary btn-lg my-1 score-button" id="submitScore">Valhalla Awaits</button>
+                        <button type="submit" class="btn btn-primary btn-lg my-1 score-button" id="play-again">Play Again</button>
+                        <button type="submit" class="btn btn-primary btn-lg my-1 score-button" id="reset-scoreboard">Clear Scoreboard</button>
+                    </form>
                     <button type="button" class="btn btn-primary btn-lg my-1" id="start-game"></button>
                 </header>
+                <!-- buttons for user to select answers to questions -->
                 <section class="hide" id="answer-button-area">
                     <div>
                         <button type="button" class="btn btn-primary btn-lg my-1 answer-button" id="option1"></button>
@@ -43,13 +47,14 @@
                         <button type="button" class="btn btn-primary btn-lg my-1 answer-button" id="option4"></button>
                     </div>
                 </section>
+                <!-- Area to display if the user's guess was correct or incorrect -->
                 <div id="questions-result-area" class="hide">
                     <hr/>
                     <p></p>
                 </div>             
             </main>
-            <aside class="col-md-3" id="score-area">
-                
+            <!-- Area to display score while the game is running -->
+            <aside class="col-md-3" id="score-area">                
             </aside>
         </div>
     </div>

@@ -123,6 +123,8 @@ function gotoScoreBoard() {
     strikeAll();
     h2.textContent = "Scoreboard";
     h2.classList.remove("hide");
+    header.classList.remove("hide");
+    quizArea.classList.remove("hide");
     //scoreboard built from storage goes here
     playAgainBtn.textContent = "Play again";
     scoreResetBtn.textContent = "Reset scoreboard";  

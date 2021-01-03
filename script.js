@@ -1,4 +1,4 @@
-//List of DOM pointers useful for making page manupulations.
+//List of DOM pointers useful for making page manipulations.
 var highscoreArea = document.querySelector("#highscore-area");
 
 var quizArea = document.querySelector("#quiz-area");
@@ -115,19 +115,23 @@ function resetScoreboard(event) {
     event.preventDefault();
     scoreBoard = [];
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
-    console.log(scoreBoard);   
 }
-// I can't figure out why elements in this function will not display. This function
-// was intended to create the scoreboard viewing area with the option to reset it
+// Create the scoreboard viewing area with the buttons that can reset the scoreboard
 // or play the quiz game again.
 function gotoScoreBoard() {
     strikeAll();
     h2.textContent = "Scoreboard";
+    welcomeP.textContent = "";
+    welcomeP.classList.remove("hide");
     h2.classList.remove("hide");
     header.classList.remove("hide");
     quizArea.classList.remove("hide");
-    //scoreboard built from storage goes here
-    //create a unordered list from each element in storage
+    console.log(scoreBoard);
+    for (var i = 0; i < scoreBoard.length;i++) {
+        var li = document.createElement("li");
+        li.textContent = scoreBoard[i].name + " " + scoreBoard[i].score;
+        welcomeP.appendChild(li);
+    }    
     playAgainBtn.textContent = "Play again";
     scoreResetBtn.textContent = "Reset scoreboard";  
     playAgainBtn.classList.remove("hide");
@@ -138,8 +142,7 @@ function gotoScoreBoard() {
 function submitScore(event) {
     event.preventDefault();
     var userName = scoreInputField.value.trim();
-    scoreBoard.push({[userName]: scoreTimer,});
-    console.log(scoreBoard);
+    scoreBoard.push({name: userName, score: scoreTimer,});
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
     gotoScoreBoard();
 }
@@ -155,7 +158,6 @@ function setupGame() {
     } else {
         scoreBoard = JSON.parse(localStorage.getItem("scoreBoard"));
     }
-    console.log(scoreBoard);
     quizArea.classList.remove("hide");
     header.classList.remove("hide");
     h2.classList.remove("hide");

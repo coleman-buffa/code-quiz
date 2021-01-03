@@ -114,7 +114,8 @@ function compareAnswer(event) {
 function resetScoreboard(event) {
     event.preventDefault();
     scoreBoard = [];
-    localStorage.setItem("scoreboard", JSON.stringify(scoreBoard));    
+    localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
+    console.log(scoreBoard);   
 }
 // I can't figure out why elements in this function will not display. This function
 // was intended to create the scoreboard viewing area with the option to reset it
@@ -126,6 +127,7 @@ function gotoScoreBoard() {
     header.classList.remove("hide");
     quizArea.classList.remove("hide");
     //scoreboard built from storage goes here
+    //create a unordered list from each element in storage
     playAgainBtn.textContent = "Play again";
     scoreResetBtn.textContent = "Reset scoreboard";  
     playAgainBtn.classList.remove("hide");
@@ -136,24 +138,28 @@ function gotoScoreBoard() {
 function submitScore(event) {
     event.preventDefault();
     var userName = scoreInputField.value.trim();
-    scoreBoard.push({ name: userName, score: scoreTimer });
+    scoreBoard.push({[userName]: scoreTimer,});
+    console.log(scoreBoard);
     localStorage.setItem("scoreBoard", JSON.stringify(scoreBoard));
     gotoScoreBoard();
 }
 
 //Setup elements needed to play the game and initializes the score timer
 //to 75. Once the startTimer function has been called the scoreTimer
-//variable will start decrementing every second.
+//variable will start decrementing every second. Also checks local storage for an 
+//existing scores and will initialize the global variable if it does exist.
 function setupGame() {
     strikeAll();
+    if (localStorage.getItem("scoreBoard" === null)) {
+        scoreBoard = [];        
+    } else {
+        scoreBoard = JSON.parse(localStorage.getItem("scoreBoard"));
+    }
+    console.log(scoreBoard);
     quizArea.classList.remove("hide");
     header.classList.remove("hide");
     h2.classList.remove("hide");
     buttonArea.classList.remove("hide");
-    buttonOption1.classList.remove("hide");
-    buttonOption2.classList.remove("hide");
-    buttonOption3.classList.remove("hide");
-    buttonOption4.classList.remove("hide");
     scoreArea.classList.remove("hide");
     setupQuestionRound();
     scoreTimer = 75;
@@ -190,7 +196,7 @@ function setupWelcome() {
     welcomeP.classList.remove("hide");
     startButton.classList.remove("hide");
     h2.textContent = "Test your might";
-    welcomeP.textContent = "Test your knowledge by answering the following questions! Answer incorrectly and lose 10 seconds off the clock. The game ends when you run out of questions or time.";
+    welcomeP.textContent = "Test your knowledge by answering the following questions! Answer incorrectly and lose 5 points. The game ends when you run out of questions or time.";
     startButton.textContent = "Begin your Trial";
 }
 
@@ -222,10 +228,6 @@ function strikeAll() {
     scoreEntry.classList.add("hide");
     startButton.classList.add("hide");
     buttonArea.classList.add("hide");
-    buttonOption1.classList.add("hide");
-    buttonOption2.classList.add("hide");
-    buttonOption3.classList.add("hide");
-    buttonOption4.classList.add("hide");
     questionResultArea.classList.add("hide");
     scoreArea.classList.add("hide");
     scoreEntry.classList.add("hide");
